@@ -1,0 +1,36 @@
+{
+  "name": "jaap",
+  "version": "1.0.0",
+  "description": "Facturación del servicio de agua potable",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Perlesvaux/jaap.git"
+  },
+  "keywords": [
+    "jaap",
+    "agua",
+    "potable",
+    "facturación"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Perlesvaux/jaap/issues"
+  },
+  "homepage": "https://github.com/Perlesvaux/jaap#readme",
+  "type": "module",
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.7.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}
