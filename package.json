@@ -4,6 +4,7 @@
   "description": "Facturación del servicio de agua potable",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha"
   },
   "repository": {
