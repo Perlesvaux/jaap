@@ -79,12 +79,27 @@ app.get('/generar-recibo', logger, async function(req, res){
   let response = {dbquery: "Sorry, something went wrong"}
   let strQuery =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
   const usuario = await q(strQuery, [req.body.medidor])
-  const consumption = req.body.lectura_nueva - usuario[0].lectura_actual 
+
+  const consumption = parseInt(req.body.lectura_nueva) - parseInt(usuario[0].lectura_actual) 
+  //const consumption = parseInt(req.body.lectura_nueva) - parseInt(usuario[0].lectura_actual) 
   const until = new Date(usuario[0].hasta)
-  until.setDate(until.getDate()+30);
-  let new_data = {...usuario[0], hasta:until, desde:usuario[0].hasta}
+  const today = new Date(Date.now())
+
+  const numberOfDays = Math.ceil((today-until) / (1000 * 60 * 60 * 24))
+  //until.setDate(until.getDate()+30);
+  let new_data = {...usuario[0],
+    desde:usuario[0].hasta,
+    hasta:today,
+    lectura_anterior:parseInt(usuario[0].lectura_actual),
+    lectura_actual:parseInt(req.body.lectura_nueva),
+    consumo:consumption,
+    dias:numberOfDays
+  }
+
   console.log(until)
+  console.log(today)
   console.log(consumption)
+  console.log(numberOfDays)
   res.json(new_data)
 
 
