@@ -139,3 +139,13 @@ app.post('/generar-recibo', logger, async function(req, res){
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+
+//****Tabla de tarifas****`
+//6 o Menos:       $2.61 (Tarifa minima)
+//Entre 7 - 40:    0.25*(MEDICION-7)+1.75+1.60
+//Entre 41 - 50:   0.40*(MEDICION-7)+11.60
+//Entre 51 - 100:  (0.75*MEDICION)+1.60
+//Entre 101 - 150: (1.00*MEDICION)+1.60
+//Entre 151 - 200: (1.25*MEDICION)+1.60
+//201 o Mas:       (1.50*MEDICION)+1.60
