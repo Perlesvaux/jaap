@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 app.use(bodyParser.text({type:"text/plain"}))
 app.use(bodyParser.urlencoded({extended:false}))
 
-// sql --username=chico --dbname=jaap --tuples-only --no-align
+// psql --username=chico --dbname=jaap --tuples-only --no-align
 // Configure connection to psql database
 import Pool from 'pg-pool';
 const connection = new Pool({
@@ -43,41 +43,85 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 
 // http://expressjs.com/en/starter/static-files.html
 // app.use(express.static('public'));
-
 // http://expressjs.com/en/starter/basic-routing.html
+
+
+let RESPONSE = []
+let strQuery = ''
+
 app.get('/', logger, async function (req, res) {
-  const usuarios = await q("select * from usuarios")
-  res.json({msg: "Hello World!", dbquery: usuarios})
+  try {
+    RESPONSE = [{msg: "Bienvenido al JAAP"}];
+  } catch (err) {
+    console.error(`Hubo un error al intentar acceder a la tabla jaap.usuarios: ${err}`);
+  }
+    res.send(RESPONSE);
 });
 
-app.get('/encontrar', logger, async function(req, res) {
-  let response = {dbquery:"Sorry, that user doesn't exist"}
-  let strQuery = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
+app.get('/usuarios', logger, async function (req, res) {
+  try {
+    RESPONSE = await q("select * from usuarios");
+    //res.send(RESPONSE);
+  } catch (err) {
+    console.error(`Hubo un error al intentar acceder a la tabla jaap.usuarios: ${err}`);
+    //res.send([]);
+  }
+    res.send(RESPONSE);
+});
 
-  
-  // const usuario = await q('select * from usuarios where medidor=$1', [req.body.medidor])
-  const usuario = await q(strQuery, [req.body.medidor])
-  // if (usuario) response={...response, dbquery:`Welcome back ${usuario[0].nombre}, your last consumption was ${usuario[0].lectura_actual}`}
-  if (usuario) response={...response, dbquery:usuario, msg:`La ultima lectura de ${usuario[0].nombre} fue ${usuario[0].lectura_actual} (${usuario[0].hasta})` }
-  
-  // res.json({dbquery: `Welcome back ${usuario[0].nombre}!`})
-  res.json(response)
+app.get('/ultimo', logger, async function(req, res) {
+  try {
+    //let response = {dbquery:"Sorry, that user doesn't exist"}
+    strQuery = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
+    // const usuario = await q('select * from usuarios where medidor=$1', [req.body.medidor])
+    RESPONSE = await q(strQuery, [req.body.medidor])
+    // if (usuario) response={...response, dbquery:`Welcome back ${usuario[0].nombre}, your last consumption was ${usuario[0].lectura_actual}`}
+    //if (usuario) response={...response, dbquery:usuario, msg:`La ultima lectura de ${usuario[0].nombre} fue ${usuario[0].lectura_actual} (${usuario[0].hasta})` }
+
+    // res.json({dbquery: `Welcome back ${usuario[0].nombre}!`})
+    //res.send(RESPONSE)
+  } catch (err) {
+    console.error(`Hubo un error al intentar acceder a la tabla jaap.usuarios FULL JOIN jaap.recibos: ${err}`);
+    //res.send(RESPONSE)
+  }
+    res.send(RESPONSE)
+})
+
+
+app.get('/recientes', logger, async function (req, res) {
+  try {
+    strQuery = "select DISTINCT ON (medidor) * from usuarios full join recibos USING(medidor) order by medidor, desde DESC"
+    RESPONSE = await q(strQuery);
+    //res.send(RESPONSE)
+    
+
+  } catch(err) {
+    console.error(`Hubo un error al intentar acceder a la tabla jaap.usuarios FULL JOIN jaap.recibos: ${err}`);
+    //res.send(RESPONSE)
+  }
+    res.send(RESPONSE)
+
 })
 
 app.get('/todos-los-recibos-de', logger, async function(req, res){
-  let response = {dbquery:"Sorry, no receipts were found"}
-  let strQuery = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1"
-  const recibos = await q(strQuery, [req.body.medidor])
-  if (recibos) response={...response, dbquery:recibos}
-  res.json(response)
-
-   // insert into recibos values(503,270,261,9,'2023-11-15','2023-12-15',31,99891)
+  try {
+    //let response = {dbquery:"Sorry, no receipts were found"}
+    strQuery = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1"
+    RESPONSE = await q(strQuery, [req.body.medidor])
+    //if (recibos) response={...response, dbquery:recibos}
+    //res.send(RESPONSE)
+    // insert into recibos values(503,270,261,9,'2023-11-15','2023-12-15',31,99891)
+  } catch (err) {
+    console.error(`Hubo un error al intentar acceder a la tabla jaap.usuarios FULL JOIN jaap.recibos: ${err}`);
+    //res.send(RESPONSE)
+  }
+    res.send(RESPONSE);
 
 })
 
 app.get('/generar-recibo', logger, async function(req, res){
-  let response = {dbquery: "Sorry, something went wrong"}
-  let strQuery =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
+  //let response = {dbquery: "Sorry, something went wrong"}
+  strQuery =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
   const usuario = await q(strQuery, [req.body.medidor])
 
   const consumption = parseInt(req.body.lectura_nueva) - parseInt(usuario[0].lectura_actual) 
@@ -100,22 +144,12 @@ app.get('/generar-recibo', logger, async function(req, res){
   console.log(today)
   console.log(consumption)
   console.log(numberOfDays)
-  res.json(new_data)
+  res.send([ new_data ])
 
 
 })
 
 
-
-
-
-
-// your first API endpoint...
-// app.get('/api/whoami', function (req, res) {
-//   res.json({ ipaddress: req.ip, language:req.headers['accept-language'], software: req.headers['user-agent'] });
-// });
-
-// listen for requests :)
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
