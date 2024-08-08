@@ -71,7 +71,7 @@ app.get('/usuarios', logger, async function (req, res) {
 });
 
 
-app.get('/ultimo', logger, async function(req, res) {
+app.post('/ultimo', logger, async function(req, res) {
   try {
     QUERY = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
     RESPONSE = await q(QUERY, [req.body.medidor])
@@ -96,7 +96,7 @@ app.get('/recientes', logger, async function (req, res) {
     res.send(RESPONSE)
 })
 
-app.get('/todos-los-recibos-de', logger, async function(req, res){
+app.post('/todos-los-recibos-de', logger, async function(req, res){
   try {
     QUERY = "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1"
     RESPONSE = await q(QUERY, [req.body.medidor])
@@ -109,7 +109,7 @@ app.get('/todos-los-recibos-de', logger, async function(req, res){
 })
 
 
-app.get('/generar-recibo', logger, async function(req, res){
+app.post('/generar-recibo', logger, async function(req, res){
   QUERY =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
   const usuario = await q(QUERY, [req.body.medidor])
   const consumption = parseInt(req.body.lectura_nueva) - parseInt(usuario[0].lectura_actual) 
