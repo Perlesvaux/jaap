@@ -1,20 +1,37 @@
 import assert from 'assert';
 import { ultimos, usuarios } from './test_constants.js'
+import { tarifas } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
-describe("A simple string comparison", ()=>{
-  it("endpoint /ultimo responds with correct JSON", ()=>{
+describe("Suite testing the following endpoints", ()=>{
+
+  it("/ultimo responds with correct JSON", ()=>{
     for (const ultimo of ultimos) assert.deepEqual(ultimo.actual, ultimo.expected);
     assert.deepEqual((()=>'Hello World! xD')(), "Hello World! xD")
   });
 
-  it("endpoints /usuarios /recientes respond with correct JSON", ()=>{
+  it("/usuarios /recientes respond with correct JSON", ()=>{
     for (const usuario of usuarios) assert.deepEqual(usuario.actual, usuario.expected);
   });
 
 
 
 })
+
+describe("Suite testing functions", ()=>{
+
+  it("Tarifas correctas", ()=>{
+    assert.equal(tarifas(4), 2.61)
+    assert.equal(tarifas(33), 9.85)
+    assert.equal(tarifas(50), 15.60)
+    assert.equal(tarifas(51), 39.85)
+
+    //assert.equal(tarifas(50), 15.60)
+
+  })
+
+
+});
 
 
 

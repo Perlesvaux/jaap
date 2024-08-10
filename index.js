@@ -149,3 +149,7 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 //Entre 101 - 150: (1.00*MEDICION)+1.60
 //Entre 151 - 200: (1.25*MEDICION)+1.60
 //201 o Mas:       (1.50*MEDICION)+1.60
+
+
+
+
