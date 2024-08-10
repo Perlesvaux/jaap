@@ -8,12 +8,10 @@ describe("A simple string comparison", ()=>{
     assert.deepEqual((()=>'Hello World! xD')(), "Hello World! xD")
   });
 
-  it("endpoint /usuarios responds with correct JSON", ()=>{
+  it("endpoints /usuarios /recientes respond with correct JSON", ()=>{
     for (const usuario of usuarios) assert.deepEqual(usuario.actual, usuario.expected);
-
-
-
   });
+
 
 
 })

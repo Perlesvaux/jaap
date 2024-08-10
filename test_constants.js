@@ -77,6 +77,63 @@ export const usuarios = [
         "zona": 9
     }
 ]
+  },
+  {
+    actual: await testEndpointGET(`${BACKEND}recientes`),
+    expected: [
+    {
+        "medidor": 502,
+        "nombre": "Pedro",
+        "caserio": "El Progreso",
+        "zona": 13,
+        "lectura_actual": 265,
+        "lectura_anterior": 260,
+        "consumo": 5,
+        "desde": "2023-09-15T06:00:00.000Z",
+        "hasta": "2023-10-15T06:00:00.000Z",
+        "dias": 31,
+        "numero": 99896
+    },
+    {
+        "medidor": 503,
+        "nombre": "Manuel",
+        "caserio": "La Pradera",
+        "zona": 9,
+        "lectura_actual": 270,
+        "lectura_anterior": 261,
+        "consumo": 9,
+        "desde": "2023-11-15T06:00:00.000Z",
+        "hasta": "2023-12-15T06:00:00.000Z",
+        "dias": 31,
+        "numero": 99893
+    },
+    {
+        "medidor": 511,
+        "nombre": "Jaime",
+        "caserio": "La Pradera",
+        "zona": 9,
+        "lectura_actual": 270,
+        "lectura_anterior": 261,
+        "consumo": 9,
+        "desde": "2023-09-15T06:00:00.000Z",
+        "hasta": "2023-10-15T06:00:00.000Z",
+        "dias": 31,
+        "numero": 99897
+    },
+    {
+        "medidor": 520,
+        "nombre": "Josh",
+        "caserio": "La Providencia",
+        "zona": 11,
+        "lectura_actual": 265,
+        "lectura_anterior": 260,
+        "consumo": 5,
+        "desde": "2023-11-15T06:00:00.000Z",
+        "hasta": "2023-12-15T06:00:00.000Z",
+        "dias": 30,
+        "numero": 99894
+    }
+]
   }
 ]
 
@@ -107,6 +164,8 @@ export async function testEndpointGET(endpoint, body){
     return res
   } catch (err) { return `Operation failed: ${err}` }
 }
+
+
 
 
 
