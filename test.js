@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { ultimos, usuarios } from './test_constants.js'
+import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201 } from './test_constants.js'
 import { tarifas } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
@@ -18,17 +18,41 @@ describe("Suite testing the following endpoints", ()=>{
 
 })
 
-describe("Suite testing functions", ()=>{
+describe("Suite testing fees", ()=>{
 
-  it("Tarifas correctas", ()=>{
-    assert.equal(tarifas(4), 2.61)
-    assert.equal(tarifas(33), 9.85)
-    assert.equal(tarifas(50), 15.60)
-    assert.equal(tarifas(51), 39.85)
-
-    //assert.equal(tarifas(50), 15.60)
-
+  it("Correct fees below or equal to 6", ()=>{
+    for (const medida of menos_de_6) assert.equal(tarifas(medida.actual), medida.expected)
   })
+
+  it("Correct fees 7-40", ()=>{
+    for (const medida of de_7_40) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees 41-50", ()=>{
+    for (const medida of de_41_50) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees 50-100", ()=>{
+    for (const medida of de_51_100) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees 101-150", ()=>{
+    for (const medida of de_101_150) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees 151-200", ()=>{
+    for (const medida of de_151_200) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees 151-200", ()=>{
+    for (const medida of de_151_200) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+  it("Correct fees above or equal to 201", ()=>{
+    for (const medida of mas_de_201) assert.equal(tarifas(medida.actual), medida.expected)
+  })
+
+
 
 
 });

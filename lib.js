@@ -21,3 +21,29 @@ export function tarifas(consumo) {
 //Entre 101 - 150: (1.00*consumo)+1.60
 //Entre 151 - 200: (1.25*consumo)+1.60
 //201 o Mas:       (1.50*consumo)+1.60
+
+export async function testEndpointPOST(endpoint, body){
+  try {
+
+    // Create FormData
+    const formData = new URLSearchParams(body)
+
+    // Perform request.
+    const req = await fetch(endpoint, 
+      { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData }
+    );
+    const res = await req.json();
+    return res
+
+  } catch (err) { return `Operation failed: ${err}` }
+}
+
+
+
+export async function testEndpointGET(endpoint, body){
+  try {
+    const req = await fetch(endpoint);
+    const res = await req.json();
+    return res
+  } catch (err) { return `Operation failed: ${err}` }
+}
