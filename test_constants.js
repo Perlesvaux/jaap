@@ -15,7 +15,9 @@ export const ultimos = [
         "desde": "2023-11-15T06:00:00.000Z",
         "hasta": "2023-12-15T06:00:00.000Z",
         "dias": 31,
-        "numero": 99893 }]
+        "numero": 99893,
+        "total": "3.85"
+    }]
     },
     {
     actual:await testEndpointPOST(`${BACKEND}ultimo`, {medidor:502}),
@@ -30,7 +32,9 @@ export const ultimos = [
         "desde": "2023-09-15T06:00:00.000Z",
         "hasta": "2023-10-15T06:00:00.000Z",
         "dias": 31,
-        "numero": 99896}]
+        "numero": 99896,
+        "total": "2.61"
+    }]
   },
   {
     actual: await testEndpointPOST(`${BACKEND}ultimo`, {medidor:511}),
@@ -45,7 +49,8 @@ export const ultimos = [
       "desde": "2023-09-15T06:00:00.000Z",
       "hasta": "2023-10-15T06:00:00.000Z",
       "dias": 31,
-      "numero": 99897 }]
+      "numero": 99897,
+      "total": "3.85"}]
   }
   ]
 
@@ -93,7 +98,8 @@ export const usuarios = [
         "desde": "2023-09-15T06:00:00.000Z",
         "hasta": "2023-10-15T06:00:00.000Z",
         "dias": 31,
-        "numero": 99896
+        "numero": 99896,
+        "total": "2.61"
     },
     {
         "medidor": 503,
@@ -106,7 +112,8 @@ export const usuarios = [
         "desde": "2023-11-15T06:00:00.000Z",
         "hasta": "2023-12-15T06:00:00.000Z",
         "dias": 31,
-        "numero": 99893
+        "numero": 99893,
+        "total": "3.85"
     },
     {
         "medidor": 511,
@@ -119,7 +126,8 @@ export const usuarios = [
         "desde": "2023-09-15T06:00:00.000Z",
         "hasta": "2023-10-15T06:00:00.000Z",
         "dias": 31,
-        "numero": 99897
+        "numero": 99897,
+        "total": "3.85"
     },
     {
         "medidor": 520,
@@ -132,7 +140,8 @@ export const usuarios = [
         "desde": "2023-11-15T06:00:00.000Z",
         "hasta": "2023-12-15T06:00:00.000Z",
         "dias": 30,
-        "numero": 99894
+        "numero": 99894,
+        "total": "2.61"
     }
 ]
   }

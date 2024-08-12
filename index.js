@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 // psql --username=chico --dbname=jaap --tuples-only --no-align
 // pg_dump -cC --inserts -U chico jaap > jaap.sql
 // psql -U postgres < jaap.sql
-import { q, logger } import './lib.js'
+import { q, logger } from './lib.js'
 
 // Configure CORS
 import cors from 'cors';
