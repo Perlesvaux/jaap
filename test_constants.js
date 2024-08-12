@@ -167,6 +167,24 @@ export const generar_recibo =[
         "total": "8.85"
     }
 ]
+  },{
+    actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor: 502, lectura_nueva:299}),
+    expected:[
+    {
+        "medidor": 502,
+        "nombre": "Pedro",
+        "caserio": "El Progreso",
+        "zona": 13,
+        "lectura_actual": 299,
+        "lectura_anterior": 265,
+        "consumo": 34,
+        "desde": "2023-10-15T06:00:00.000Z",
+        //"hasta": "2024-08-12T08:57:58.619Z",
+        //"dias": 303,
+        "numero": 99896,
+        "total": "10.10"
+    }
+]
   }
 ]
 
