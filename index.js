@@ -7,34 +7,9 @@ app.use(bodyParser.text({type:"text/plain"}))
 app.use(bodyParser.urlencoded({extended:false}))
 
 // psql --username=chico --dbname=jaap --tuples-only --no-align
-// Configure connection to psql database
-import Pool from 'pg-pool';
-const connection = new Pool({
-  user:"chico",
-  host:"localhost",
-  database:"jaap",
-  password:"elpepe",
-  port: 5432
-});
-
-// Wrapper that handles PSQL queries
-async function q (query, params){
-  try {
-    const result = await connection.query(query, params);
-    return result.rows;
-    
-  } catch (err) {
-    console.error(err);
-    return "";
-
-  }
-}
-
-// Logger
-function logger (req, res, next){
-  console.log(req.method, req.path, req.ip);
-  next();
-}
+// pg_dump -cC --inserts -U chico jaap > jaap.sql
+// psql -U postgres < jaap.sql
+import { q, logger } import './lib.js'
 
 // Configure CORS
 import cors from 'cors';
@@ -42,6 +17,8 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 // http://expressjs.com/en/starter/static-files.html
 // app.use(express.static('public'));
 // http://expressjs.com/en/starter/basic-routing.html
+
+
 
 
 let RESPONSE = []
