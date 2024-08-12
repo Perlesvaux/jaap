@@ -147,6 +147,29 @@ export const usuarios = [
   }
 ]
 
+
+export const generar_recibo =[
+  {
+    actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor:511, lectura_nueva:299}),
+    expected:[
+    {
+        "medidor": 511,
+        "nombre": "Jaime",
+        "caserio": "La Pradera",
+        "zona": 9,
+        "lectura_actual": 299,
+        "lectura_anterior": 270,
+        "consumo": 29,
+        "desde": "2023-10-15T06:00:00.000Z",
+        //"hasta": new Date(Date.now()),
+        //"dias": 302,
+        "numero": 99897,
+        "total": "8.85"
+    }
+]
+  }
+]
+
 export const de_7_40 = [
   { actual: 7  , expected:3.35 },
   { actual: 8  , expected:3.60 },

@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 // psql --username=chico --dbname=jaap --tuples-only --no-align
 // pg_dump -cC --inserts -U chico jaap > jaap.sql
 // psql -U postgres < jaap.sql
-import { q, logger } from './lib.js'
+import { q, logger, tarifas } from './lib.js'
 
 // Configure CORS
 import cors from 'cors';
@@ -93,6 +93,7 @@ app.post('/generar-recibo', logger, async function(req, res){
   const until = new Date(usuario[0].hasta)
   const today = new Date(Date.now())
   const numberOfDays = Math.ceil((today-until) / (1000 * 60 * 60 * 24))
+  const newTotal = tarifas(consumption);
 
   let new_data = {...usuario[0],
     desde:usuario[0].hasta,
@@ -100,13 +101,15 @@ app.post('/generar-recibo', logger, async function(req, res){
     lectura_anterior:parseInt(usuario[0].lectura_actual),
     lectura_actual:parseInt(req.body.lectura_nueva),
     consumo:consumption,
-    dias:numberOfDays
-  }
+    dias:numberOfDays,
+    total:newTotal
+  };
 
   console.log(until)
   console.log(today)
   console.log(consumption)
   console.log(numberOfDays)
+  console.log(newTotal)
   res.send([ new_data ])
 
 

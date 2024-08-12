@@ -1,6 +1,7 @@
 import assert from 'assert';
-import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201 } from './test_constants.js'
-import { tarifas } from './lib.js'
+import { expect } from 'chai'
+import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo } from './test_constants.js'
+import { tarifas,  testEndpointPOST } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
 describe("Suite testing the following endpoints", ()=>{
@@ -14,9 +15,33 @@ describe("Suite testing the following endpoints", ()=>{
     for (const usuario of usuarios) assert.deepEqual(usuario.actual, usuario.expected);
   });
 
+  //expect((()=>3.01).to.be.closeTo((()=>3.02),10));
+
+  it("/generar-recibo responds with correct JSON", ()=>{
+    //expect(()=>3.01).to.be.closeTo((()=>3.02),10);
+    for (const usuario of generar_recibo) {
+      assert.deepEqual(usuario.actual[0].nombre           , usuario.expected[0].nombre);
+      assert.deepEqual(usuario.actual[0].caserio          , usuario.expected[0].caserio);
+      assert.deepEqual(usuario.actual[0].zona             , usuario.expected[0].zona);
+      assert.deepEqual(usuario.actual[0].lectura_actual   , usuario.expected[0].lectura_actual);
+      assert.deepEqual(usuario.actual[0].lectura_anterior , usuario.expected[0].lectura_anterior);
+      assert.deepEqual(usuario.actual[0].consumo          , usuario.expected[0].consumo);
+      assert.deepEqual(usuario.actual[0].desde            , usuario.expected[0].desde);
+      assert.deepEqual(usuario.actual[0].numero           , usuario.expected[0].numero);
+      assert.deepEqual(usuario.actual[0].total            , usuario.expected[0].total);
+      expect(new Date(usuario.actual[0].hasta).getTime()).to.be.closeTo(Date.now(),11);
+      const daysComputedAtRuntime = Math.ceil( (Date.now() - new Date(usuario.actual[0].desde)) / (1000 * 60 * 60 * 24));
+      assert.deepEqual(usuario.actual[0].dias             , daysComputedAtRuntime);
+    }
+
+  })
 
 
 })
+
+
+
+
 
 describe("Suite testing fees", ()=>{
 
