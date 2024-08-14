@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { expect } from 'chai'
-import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes } from './test_constants.js'
+import { BACKEND, ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes, nuevo_recibo } from './test_constants.js'
 import { tarifas,  testEndpointPOST, q } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
@@ -25,11 +25,6 @@ before( async() => {
   }
 });
 
-//after(async () => {
-//  const QUERY =  `TRUNCATE TABLE recibos`;
-//  await q(QUERY);
-//});
-
 describe("Suite testing the following endpoints", ()=>{
 
   it("/ultimo responds with correct JSON", ()=>{
@@ -46,7 +41,7 @@ describe("Suite testing the following endpoints", ()=>{
         hasta:actual_hasta,
         numero:actual_numero,
         total:actual_total,
-        dias:actual_dias } ] = actual;
+        dias } ] = actual;
 
       const [ { medidor:expected_medidor,
         nombre:expected_nombre,
@@ -56,10 +51,8 @@ describe("Suite testing the following endpoints", ()=>{
         lectura_anterior:expected_lectura_anterior,
         consumo:expected_consumo,
         desde:expected_desde,
-        hasta:expected_hasta,
         numero:expected_numero,
-        total:expected_total,
-        dias:expected_dias} ] = expected;
+        total:expected_total } ] = expected;
 
         assert.deepEqual(actual_medidor, expected_medidor);
         assert.deepEqual(actual_nombre, expected_nombre);
@@ -69,8 +62,8 @@ describe("Suite testing the following endpoints", ()=>{
         assert.deepEqual(actual_lectura_anterior, expected_lectura_anterior);
         assert.deepEqual(actual_consumo, expected_consumo);
         assert.deepEqual(actual_desde, expected_desde);
-        //assert.deepEqual(actual_numero, expected_numero);
         assert.deepEqual(actual_total, expected_total);
+
     }
     assert.deepEqual((()=>'Hello World! xD')(), "Hello World! xD")
   });
@@ -85,19 +78,56 @@ describe("Suite testing the following endpoints", ()=>{
     };
   });
 
-  //it("/recientes responds with correct JSON", ()=>{
-  //
-  //  for (const usuario of recientes) assert.deepEqual(usuario.actual, usuario.expected)
-  //
-  //
-  //})
+  it("/recientes responds with correct JSON", ()=>{
+
+    for (const usuario of recientes)
+    {
+      const {actual, expected} = usuario;
+      const [ { medidor:actual_medidor,
+        nombre:actual_nombre,
+        caserio:actual_caserio,
+        zona:actual_zona,
+        lectura_actual:actual_lectura_actual,
+        lectura_anterior:actual_lectura_anterior,
+        consumo:actual_consumo,
+        desde:actual_desde,
+        hasta:actual_hasta,
+        numero:actual_numero,
+        total:actual_total,
+        dias: actual_dias } ] = actual;
+
+      const [ { medidor:expected_medidor,
+        nombre:expected_nombre,
+        caserio:expected_caserio,
+        zona:expected_zona,
+        lectura_actual:expected_lectura_actual,
+        lectura_anterior:expected_lectura_anterior,
+        consumo:expected_consumo,
+        desde:expected_desde,
+        hasta:expected_hasta,
+        numero:expected_numero,
+        total:expected_total,
+        dias: expected_dias } ] = expected;
+
+        assert.deepEqual(actual_medidor, expected_medidor);
+        assert.deepEqual(actual_nombre,  expected_nombre);
+        assert.deepEqual(actual_caserio, expected_caserio);
+        assert.deepEqual(actual_zona, expected_zona);
+        assert.deepEqual(actual_lectura_actual, expected_lectura_actual);
+        assert.deepEqual(actual_lectura_anterior, expected_lectura_anterior);
+        assert.deepEqual(actual_consumo, expected_consumo);
+        assert.deepEqual(actual_desde, expected_desde);
+        assert.deepEqual(actual_total, expected_total);
+
+    }
+
+
+  })
 
   //expect((()=>3.01).to.be.closeTo((()=>3.02),10));
 
   it("/generar-recibo responds with correct JSON", ()=>{
-    //expect(()=>3.01).to.be.closeTo((()=>3.02),10);
     for (const usuario of generar_recibo) {
-
       const {actual, expected} = usuario;
       const [ { medidor:actual_medidor,
         nombre:actual_nombre,
@@ -135,9 +165,24 @@ describe("Suite testing the following endpoints", ()=>{
         assert.deepEqual(actual_total, expected_total);
         expect(new Date(actual_hasta).getTime()).to.be.closeTo(Date.now(),5000);
         const daysComputedAtRuntime = Math.ceil( (Date.now() - new Date(actual_desde)) / (1000 * 60 * 60 * 24));
-        assert.deepEqual(dias             , daysComputedAtRuntime);
+        assert.deepEqual(dias, daysComputedAtRuntime);
     }
   })
+
+  //it("/nuevo-recibo",  ()=>{
+  //  setTimeout( async () => {
+  //
+  //  for (const usuario of nuevo_recibo){
+  //    const {actual, expected} = usuario;
+  //    const data = await testEndpointPOST(`${BACKEND}nuevo-recibo`, actual)
+  //    console.log(data, expected)
+  //  }
+  //
+  //  }, 3000);
+  //
+  //})
+
+
 })
 
 

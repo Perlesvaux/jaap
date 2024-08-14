@@ -1,5 +1,5 @@
 import { testEndpointPOST, testEndpointGET, tarifas } from './lib.js'
-const BACKEND = 'http://localhost:3000/'
+export const BACKEND = 'http://localhost:3000/'
 
 export const ultimos = [
   {
@@ -152,6 +152,32 @@ export const recientes = [
   }
 
 ]
+
+
+export const nuevo_recibo = [
+  {
+    //actual:await testEndpointPOST(`${BACKEND}nuevo-recibo`, {medidor: 511, lectura_nueva:300}) ,
+    actual: {medidor: 511, lectura_nueva:300} ,
+    expected:[
+    {
+        "medidor": 511,
+        "nombre": "Jaime",
+        "caserio": "La Pradera",
+        "zona": 9,
+        "lectura_actual": 300,
+        "lectura_anterior": 270,
+        "consumo": 30,
+        "desde": "2023-10-15T06:00:00.000Z",
+        "hasta": "2024-08-14T00:51:57.937Z",
+        "dias": 304,
+        "numero": "TBD",
+        "total": "9.10"
+    }
+]
+  }
+]
+
+
 
 
 export const generar_recibo =[
