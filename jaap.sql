@@ -55,7 +55,8 @@ CREATE TABLE public.recibos (
     desde date,
     hasta date,
     dias integer,
-    numero integer
+    numero integer,
+    total numeric(6,2)
 );
 
 
@@ -107,10 +108,13 @@ ALTER TABLE ONLY public.recibos ALTER COLUMN numero SET DEFAULT nextval('public.
 -- Data for Name: recibos; Type: TABLE DATA; Schema: public; Owner: chico
 --
 
-INSERT INTO public.recibos VALUES (503, 263, 255, 8, '2023-10-15', '2023-11-15', 31, 99891);
-INSERT INTO public.recibos VALUES (520, 260, 255, 5, '2023-10-15', '2023-11-15', 31, 99892);
-INSERT INTO public.recibos VALUES (503, 270, 261, 9, '2023-11-15', '2023-12-15', 31, 99893);
-INSERT INTO public.recibos VALUES (520, 265, 260, 5, '2023-11-15', '2023-12-15', 30, 99894);
+INSERT INTO public.recibos VALUES (520, 260, 255, 5, '2023-10-15', '2023-11-15', 31, 99892, 2.61);
+INSERT INTO public.recibos VALUES (520, 265, 260, 5, '2023-11-15', '2023-12-15', 30, 99894, 2.61);
+INSERT INTO public.recibos VALUES (502, 260, 255, 5, '2023-08-15', '2023-09-15', 31, 99895, 2.61);
+INSERT INTO public.recibos VALUES (502, 265, 260, 5, '2023-09-15', '2023-10-15', 31, 99896, 2.61);
+INSERT INTO public.recibos VALUES (503, 263, 255, 8, '2023-10-15', '2023-11-15', 31, 99891, 3.60);
+INSERT INTO public.recibos VALUES (503, 270, 261, 9, '2023-11-15', '2023-12-15', 31, 99893, 3.85);
+INSERT INTO public.recibos VALUES (511, 270, 261, 9, '2023-09-15', '2023-10-15', 31, 99897, 3.85);
 
 
 --
@@ -119,13 +123,15 @@ INSERT INTO public.recibos VALUES (520, 265, 260, 5, '2023-11-15', '2023-12-15',
 
 INSERT INTO public.usuarios VALUES (503, 'Manuel', 'La Pradera', 9);
 INSERT INTO public.usuarios VALUES (520, 'Josh', 'La Providencia', 11);
+INSERT INTO public.usuarios VALUES (502, 'Pedro', 'El Progreso', 13);
+INSERT INTO public.usuarios VALUES (511, 'Jaime', 'La Pradera', 9);
 
 
 --
 -- Name: r_n_seq; Type: SEQUENCE SET; Schema: public; Owner: chico
 --
 
-SELECT pg_catalog.setval('public.r_n_seq', 99894, true);
+SELECT pg_catalog.setval('public.r_n_seq', 99905, true);
 
 
 --
