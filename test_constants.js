@@ -83,8 +83,13 @@ export const usuarios = [
         "zona": 9
     }
 ]
-  },
-  {
+  }
+  
+]
+
+
+export const recientes = [
+{
     actual: await testEndpointGET(`${BACKEND}recientes`),
     expected: [
     {
@@ -145,6 +150,7 @@ export const usuarios = [
     }
 ]
   }
+
 ]
 
 

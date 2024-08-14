@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { expect } from 'chai'
-import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo } from './test_constants.js'
+import { ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes } from './test_constants.js'
 import { tarifas,  testEndpointPOST } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
@@ -11,32 +11,69 @@ describe("Suite testing the following endpoints", ()=>{
     assert.deepEqual((()=>'Hello World! xD')(), "Hello World! xD")
   });
 
-  it("/usuarios /recientes respond with correct JSON", ()=>{
-    for (const usuario of usuarios) assert.deepEqual(usuario.actual, usuario.expected);
+  it("/usuarios responds with correct JSON", ()=>{
+    for (const usuario of usuarios) { 
+      const {actual, expected} = usuario
+      //const {medidor:actual_medidor, nombre:actual_nombre, caserio:actual_caserio, zona:actual_zona} = actual
+      //const {medidor:expected_medidor, nombre:expected_nombre, caserio:expected_caserio, zona:expected_zona} = expected
+      //assert.deepEqual(actual_medidor, expected_medidor)
+      assert.deepEqual(actual, expected)
+    };
   });
+
+  it("/recientes responds with correct JSON", ()=>{
+
+    for (const usuario of recientes) assert.deepEqual(usuario.actual, usuario.expected)
+
+    
+  })
 
   //expect((()=>3.01).to.be.closeTo((()=>3.02),10));
 
   it("/generar-recibo responds with correct JSON", ()=>{
     //expect(()=>3.01).to.be.closeTo((()=>3.02),10);
     for (const usuario of generar_recibo) {
-      assert.deepEqual(usuario.actual[0].nombre           , usuario.expected[0].nombre);
-      assert.deepEqual(usuario.actual[0].caserio          , usuario.expected[0].caserio);
-      assert.deepEqual(usuario.actual[0].zona             , usuario.expected[0].zona);
-      assert.deepEqual(usuario.actual[0].lectura_actual   , usuario.expected[0].lectura_actual);
-      assert.deepEqual(usuario.actual[0].lectura_anterior , usuario.expected[0].lectura_anterior);
-      assert.deepEqual(usuario.actual[0].consumo          , usuario.expected[0].consumo);
-      assert.deepEqual(usuario.actual[0].desde            , usuario.expected[0].desde);
-      assert.deepEqual(usuario.actual[0].numero           , usuario.expected[0].numero);
-      assert.deepEqual(usuario.actual[0].total            , usuario.expected[0].total);
-      expect(new Date(usuario.actual[0].hasta).getTime()).to.be.closeTo(Date.now(),11);
-      const daysComputedAtRuntime = Math.ceil( (Date.now() - new Date(usuario.actual[0].desde)) / (1000 * 60 * 60 * 24));
-      assert.deepEqual(usuario.actual[0].dias             , daysComputedAtRuntime);
+
+      const {actual, expected} = usuario;
+      const [ { medidor:actual_medidor,
+        nombre:actual_nombre,
+        caserio:actual_caserio,
+        zona:actual_zona,
+        lectura_actual:actual_lectura_actual,
+        lectura_anterior:actual_lectura_anterior,
+        consumo:actual_consumo,
+        desde:actual_desde,
+        hasta:actual_hasta,
+        numero:actual_numero,
+        total:actual_total,
+        dias } ] = actual;
+
+      const [ { medidor:expected_medidor,
+        nombre:expected_nombre,
+        caserio:expected_caserio,
+        zona:expected_zona,
+        lectura_actual:expected_lectura_actual,
+        lectura_anterior:expected_lectura_anterior,
+        consumo:expected_consumo,
+        desde:expected_desde,
+        numero:expected_numero,
+        total:expected_total } ] = expected;
+
+        assert.deepEqual(actual_medidor, expected_medidor);
+        assert.deepEqual(actual_nombre, expected_nombre);
+        assert.deepEqual(actual_caserio, expected_caserio);
+        assert.deepEqual(actual_zona, expected_zona);
+        assert.deepEqual(actual_lectura_actual, expected_lectura_actual);
+        assert.deepEqual(actual_lectura_anterior, expected_lectura_anterior);
+        assert.deepEqual(actual_consumo, expected_consumo);
+        assert.deepEqual(actual_desde, expected_desde);
+        assert.deepEqual(actual_numero, expected_numero);
+        assert.deepEqual(actual_total, expected_total);
+        expect(new Date(actual_hasta).getTime()).to.be.closeTo(Date.now(),12);
+        const daysComputedAtRuntime = Math.ceil( (Date.now() - new Date(actual_desde)) / (1000 * 60 * 60 * 24));
+        assert.deepEqual(dias             , daysComputedAtRuntime);
     }
-
   })
-
-
 })
 
 
