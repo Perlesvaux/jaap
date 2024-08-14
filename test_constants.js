@@ -163,7 +163,7 @@ export const generar_recibo =[
         "desde": "2023-10-15T06:00:00.000Z",
         //"hasta": new Date(Date.now()),
         //"dias": 302,
-        "numero": 99897,
+        "numero": 'TBD',
         "total": "8.85"
     }
 ]
@@ -181,7 +181,7 @@ export const generar_recibo =[
         "desde": "2023-10-15T06:00:00.000Z",
         //"hasta": "2024-08-12T08:57:58.619Z",
         //"dias": 303,
-        "numero": 99896,
+        "numero": 'TBD',
         "total": "10.10"
     }
 ]

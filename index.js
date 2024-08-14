@@ -87,33 +87,67 @@ app.post('/todos-los-recibos-de', logger, async function(req, res){
 
 
 app.post('/generar-recibo', logger, async function(req, res){
-  QUERY =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1"
-  const usuario = await q(QUERY, [req.body.medidor])
-  const consumption = parseInt(req.body.lectura_nueva) - parseInt(usuario[0].lectura_actual) 
-  const until = new Date(usuario[0].hasta)
-  const today = new Date(Date.now())
-  const numberOfDays = Math.ceil((today-until) / (1000 * 60 * 60 * 24))
-  const newTotal = tarifas(consumption);
+  try {
+    QUERY =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1";
+    const _usuario = await q(QUERY, [req.body.medidor]);
+    const _consumo = parseInt(req.body.lectura_nueva) - parseInt(_usuario[0].lectura_actual); 
+    const _desde = new Date(_usuario[0].hasta);
+    const _hasta = new Date(Date.now());
+    const _dias = Math.ceil((_hasta - _desde) / (1000 * 60 * 60 * 24));
+    const _total = tarifas(_consumo);
 
-  let new_data = {...usuario[0],
-    desde:usuario[0].hasta,
-    hasta:today,
-    lectura_anterior:parseInt(usuario[0].lectura_actual),
+    RESPONSE = [{..._usuario[0],
+      desde:_usuario[0].hasta,
+      hasta:_hasta,
+      lectura_anterior:parseInt(_usuario[0].lectura_actual),
+      lectura_actual:parseInt(req.body.lectura_nueva),
+      consumo:_consumo,
+      dias:_dias,
+      total:_total,
+      numero:"TBD" }];
+
+    res.send(RESPONSE)
+
+  } catch (err) {
+    console.error(err);
+    res.send(RESPONSE);
+  }
+})
+
+
+app.post('/nuevo-recibo', logger, async function(req, res){
+  try {
+  QUERY =  "SELECT * FROM usuarios FULL JOIN recibos USING(medidor) WHERE medidor=$1 ORDER BY desde DESC LIMIT 1";
+  const _usuario = await q(QUERY, [req.body.medidor]);
+  const _consumo = parseInt(req.body.lectura_nueva) - parseInt(_usuario[0].lectura_actual); 
+  const _desde = new Date(_usuario[0].hasta);
+  const _hasta = new Date(Date.now());
+  const _dias = Math.ceil((_hasta - _desde) / (1000 * 60 * 60 * 24));
+  const _total = tarifas(_consumo);
+
+  RESPONSE = [{..._usuario[0],
+    desde:_usuario[0].hasta,
+    hasta:_hasta,
+    lectura_anterior:parseInt(_usuario[0].lectura_actual),
     lectura_actual:parseInt(req.body.lectura_nueva),
-    consumo:consumption,
-    dias:numberOfDays,
-    total:newTotal
-  };
+    consumo:_consumo,
+    dias:_dias,
+    total:_total,
+    numero:"TBD" }];
 
-  console.log(until)
-  console.log(today)
-  console.log(consumption)
-  console.log(numberOfDays)
-  console.log(newTotal)
-  res.send([ new_data ])
+  QUERY =  `INSERT INTO recibos (medidor,lectura_actual,lectura_anterior,consumo,desde,hasta,dias,total) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8)`;
+  const {medidor, lectura_actual, lectura_anterior, consumo, desde, hasta, dias, total} = RESPONSE[0];
+  await q(QUERY, [medidor, lectura_actual, lectura_anterior, consumo, desde, hasta, dias, total]);
 
+  res.send(RESPONSE)
+
+  } catch (err) {
+    console.error(err);
+    res.send(RESPONSE);
+  }
 
 })
+
 
 
 const listener = app.listen(process.env.PORT || 3000, function () {
