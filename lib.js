@@ -74,3 +74,23 @@ export function logger (req, res, next){
 }
 
 
+//setup and cleanup testing data
+export async function mockUp_setup(){
+  await q("TRUNCATE TABLE recibos");
+
+  const MOCKUP_DATA = [{ medidor:520,lectura_actual:260,lectura_anterior:255,consumo:5,desde:'2023-10-15',hasta:'2023-11-15',dias:31,total:2.61 },
+    { medidor:520,lectura_actual:265,lectura_anterior:260,consumo:5,desde:'2023-11-15',hasta:'2023-12-15',dias:30,total:2.61 },
+    { medidor:502,lectura_actual:260,lectura_anterior:255,consumo:5,desde:'2023-08-15',hasta:'2023-09-15',dias:31,total:2.61 },
+    { medidor:502,lectura_actual:265,lectura_anterior:260,consumo:5,desde:'2023-09-15',hasta:'2023-10-15',dias:31,total:2.61 },
+    { medidor:503,lectura_actual:263,lectura_anterior:255,consumo:8,desde:'2023-10-15',hasta:'2023-11-15',dias:31,total:3.60 },
+    { medidor:503,lectura_actual:270,lectura_anterior:261,consumo:9,desde:'2023-11-15',hasta:'2023-12-15',dias:31,total:3.85 },
+    { medidor:511,lectura_actual:270,lectura_anterior:261,consumo:9,desde:'2023-09-15',hasta:'2023-10-15',dias:31,total:3.85 }]
+
+  const QUERY =  `INSERT INTO recibos (medidor,lectura_actual,lectura_anterior,consumo,desde,hasta,dias,total) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8)`;
+
+  for (const DATA of MOCKUP_DATA)
+  {
+    const {medidor, lectura_actual, lectura_anterior, consumo, desde, hasta, dias, total} = DATA
+    await q(QUERY, [medidor, lectura_actual, lectura_anterior, consumo, desde, hasta, dias, total]);
+  }
+};
