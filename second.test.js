@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { expect } from 'chai'
 //import { BACKEND, ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes, nuevo_recibo } from './test_constants.js'
-import { BACKEND, nuevo_recibo } from './test_constants.js'
+import { nuevo_recibo } from './test_constants.js'
 import { mockUp_setup, testEndpointPOST, q } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
@@ -256,7 +256,7 @@ import { mockUp_setup, testEndpointPOST, q } from './lib.js'
 //});
 
 
-  beforeEach(mockUp_setup);
+  //beforeEach(mockUp_setup);
 
 
     it("String comparison 1", ()=>{
@@ -275,15 +275,17 @@ import { mockUp_setup, testEndpointPOST, q } from './lib.js'
       assert.equal("Hello World", "Hello World")
     })
 
-  it("/nuevo-recibo", async ()=>{
-
-    for (const usuario of nuevo_recibo){
-      const {actual, expected} = usuario;
-      const data = await testEndpointPOST(`${BACKEND}nuevo-recibo`, actual)
-      console.log(data, expected)
-    }
-
-  })
+  //it("/nuevo-recibo", async ()=>{
+  //
+  //  for (const usuario of nuevo_recibo){
+  //    const {endpoint, body, expected} = usuario;
+  //    const actual = await testEndpointPOST(endpoint, body)
+  //    //const actual = await testEndpointPOST(`${BACKEND}nuevo-recibo`, actual)
+  //    console.log(actual, expected);
+  //    //assert.deepEqual();
+  //  }
+  //
+  //})
 
   })
 

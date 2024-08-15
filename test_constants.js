@@ -3,7 +3,9 @@ export const BACKEND = 'http://localhost:3000/'
 
 export const ultimos = [
   {
-    actual: await testEndpointPOST(`${BACKEND}ultimo`, {medidor:503}),
+    endpoint:`${BACKEND}ultimo`,
+    body:{medidor:503},
+    //actual: await testEndpointPOST(`${BACKEND}ultimo`, {medidor:503}),
     expected: [{
         "medidor": 503,
         "nombre": "Manuel",
@@ -20,7 +22,9 @@ export const ultimos = [
     }]
     },
     {
-    actual:await testEndpointPOST(`${BACKEND}ultimo`, {medidor:502}),
+      endpoint: `${BACKEND}ultimo`,
+      body:{medidor:502},
+    //actual:await testEndpointPOST(`${BACKEND}ultimo`, {medidor:502}),
     expected:[{
         "medidor": 502,
         "nombre": "Pedro",
@@ -37,7 +41,9 @@ export const ultimos = [
     }]
   },
   {
-    actual: await testEndpointPOST(`${BACKEND}ultimo`, {medidor:511}),
+    endpoint:`${BACKEND}ultimo`,
+    body:{medidor:511},
+    //actual: await testEndpointPOST(`${BACKEND}ultimo`, {medidor:511}),
     expected:[{
       "medidor": 511,
       "nombre": "Jaime",
@@ -56,7 +62,9 @@ export const ultimos = [
 
 export const usuarios = [
   {
-    actual:await testEndpointGET(`${BACKEND}usuarios`),
+    endpoint:`${BACKEND}usuarios`,
+    body:{},
+    //actual:await testEndpointGET(`${BACKEND}usuarios`),
     expected:[
     {
         "medidor": 503,
@@ -90,7 +98,9 @@ export const usuarios = [
 
 export const recientes = [
 {
-    actual: await testEndpointGET(`${BACKEND}recientes`),
+    endpoint:`${BACKEND}recientes`,
+    body:{},
+    //actual: await testEndpointGET(`${BACKEND}recientes`),
     expected: [
     {
         "medidor": 502,
@@ -156,8 +166,10 @@ export const recientes = [
 
 export const nuevo_recibo = [
   {
+    endpoint: `${BACKEND}nuevo-recibo`,
+    
     //actual:await testEndpointPOST(`${BACKEND}nuevo-recibo`, {medidor: 511, lectura_nueva:300}) ,
-    actual: {medidor: 511, lectura_nueva:300} ,
+    body: {medidor: 511, lectura_nueva:300} ,
     expected:[
     {
         "medidor": 511,
@@ -182,7 +194,9 @@ export const nuevo_recibo = [
 
 export const generar_recibo =[
   {
-    actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor:511, lectura_nueva:299}),
+    endpoint:`${BACKEND}generar-recibo`,
+    body:{medidor:511, lectura_nueva:299},
+    //actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor:511, lectura_nueva:299}),
     expected:[
     {
         "medidor": 511,
@@ -200,7 +214,9 @@ export const generar_recibo =[
     }
 ]
   },{
-    actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor: 502, lectura_nueva:299}),
+    endpoint:`${BACKEND}generar-recibo`,
+    body:{medidor: 502, lectura_nueva:299},
+    //actual: await testEndpointPOST(`${BACKEND}generar-recibo`, {medidor: 502, lectura_nueva:299}),
     expected:[
     {
         "medidor": 502,

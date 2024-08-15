@@ -1,16 +1,19 @@
 import assert from 'assert';
 import { expect } from 'chai'
-import { BACKEND, ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes } from './test_constants.js'
-import { mockUp_setup, tarifas,  testEndpointPOST, q } from './lib.js'
+import { BACKEND, ultimos, usuarios, de_7_40, de_41_50, de_51_100, de_101_150, de_151_200, menos_de_6, mas_de_201, generar_recibo, recientes, nuevo_recibo } from './test_constants.js'
+import { mockUp_setup, tarifas,  testEndpointGET, testEndpointPOST, q } from './lib.js'
 //import {helloWorld} from '../src/functions.js';
 
 
 describe("Suite testing the following endpoints", ()=>{
-beforeEach(mockUp_setup)
+//beforeEach(mockUp_setup)
+before(mockUp_setup)
 
-  it("/ultimo responds with correct JSON", ()=>{
+  it("/ultimo responds with correct JSON", async ()=>{
     for (const usuario of ultimos) {
-      const {actual, expected} = usuario;
+      const {endpoint, body, expected} = usuario;
+      const actual = await testEndpointPOST(endpoint, body);
+
       const [ { medidor:actual_medidor,
         nombre:actual_nombre,
         caserio:actual_caserio,
@@ -49,9 +52,11 @@ beforeEach(mockUp_setup)
     assert.deepEqual((()=>'Hello World! xD')(), "Hello World! xD")
   });
 
-  it("/usuarios responds with correct JSON", ()=>{
+  it("/usuarios responds with correct JSON", async ()=>{
     for (const usuario of usuarios) { 
-      const {actual, expected} = usuario
+      //const {actual, expected} = usuario
+      const {endpoint, body, expected} = usuario;
+      const actual = await testEndpointGET(endpoint);
       //const {medidor:actual_medidor, nombre:actual_nombre, caserio:actual_caserio, zona:actual_zona} = actual
       //const {medidor:expected_medidor, nombre:expected_nombre, caserio:expected_caserio, zona:expected_zona} = expected
       //assert.deepEqual(actual_medidor, expected_medidor)
@@ -59,11 +64,13 @@ beforeEach(mockUp_setup)
     };
   });
 
-  it("/recientes responds with correct JSON", ()=>{
+  it("/recientes responds with correct JSON", async ()=>{
 
     for (const usuario of recientes)
     {
-      const {actual, expected} = usuario;
+      //const {actual, expected} = usuario;
+      const {endpoint, body, expected} = usuario;
+      const actual = await testEndpointGET(endpoint);
       const [ { medidor:actual_medidor,
         nombre:actual_nombre,
         caserio:actual_caserio,
@@ -107,9 +114,11 @@ beforeEach(mockUp_setup)
 
   //expect((()=>3.01).to.be.closeTo((()=>3.02),10));
 
-  it("/generar-recibo responds with correct JSON", ()=>{
+  it("/generar-recibo responds with correct JSON", async ()=>{
     for (const usuario of generar_recibo) {
-      const {actual, expected} = usuario;
+      //const {actual, expected} = usuario;
+      const {endpoint, body, expected} = usuario;
+      const actual = await testEndpointPOST(endpoint, body);
       const [ { medidor:actual_medidor,
         nombre:actual_nombre,
         caserio:actual_caserio,
@@ -165,9 +174,62 @@ beforeEach(mockUp_setup)
 
 
 
+
 })
 
 
+describe("Suite testing creation of new entries", ()=>{
+
+before(mockUp_setup);
+
+  it("/nuevo-recibo", async ()=>{
+
+    for (const usuario of nuevo_recibo){
+      const {endpoint, body, expected} = usuario;
+      const actual = await testEndpointPOST(endpoint, body)
+      //console.log(actual, expected);
+      //assert.deepEqual();
+      const [ { medidor:actual_medidor,
+        nombre:actual_nombre,
+        caserio:actual_caserio,
+        zona:actual_zona,
+        lectura_actual:actual_lectura_actual,
+        lectura_anterior:actual_lectura_anterior,
+        consumo:actual_consumo,
+        //desde:actual_desde,
+        //hasta:actual_hasta,
+        numero:actual_numero,
+        total:actual_total,
+        //dias
+      } ] = actual;
+
+      const [ { medidor:expected_medidor,
+        nombre:expected_nombre,
+        caserio:expected_caserio,
+        zona:expected_zona,
+        lectura_actual:expected_lectura_actual,
+        lectura_anterior:expected_lectura_anterior,
+        consumo:expected_consumo,
+        //desde:expected_desde,
+        numero:expected_numero,
+        total:expected_total
+      } ] = expected;
+
+        assert.deepEqual(actual_medidor, expected_medidor);
+        assert.deepEqual(actual_nombre, expected_nombre);
+        assert.deepEqual(actual_caserio, expected_caserio);
+        assert.deepEqual(actual_zona, expected_zona);
+        assert.deepEqual(actual_lectura_actual, expected_lectura_actual);
+        assert.deepEqual(actual_lectura_anterior, expected_lectura_anterior);
+        assert.deepEqual(actual_consumo, expected_consumo);
+        //assert.deepEqual(actual_desde, expected_desde);
+        assert.deepEqual(actual_numero, expected_numero);
+        assert.deepEqual(actual_total, expected_total);
+    }
+
+  })
+
+})
 
 
 
@@ -209,41 +271,4 @@ describe("Suite testing fees", ()=>{
 
 
 });
-
-
-
-//const BACKEND = 'http://localhost:3000/'
-
-
-
-//async function testEndpoint(endpoint, body){
-//  try {
-//    // Creating Formdata. 
-//    //const formData = new FormData();
-//    //for (const k in body) {
-//    //  console.log(`${k}`,`${body[k]}`);
-//    //  formData.append(`${k}`,`${body[k]}`);
-//    //}
-//
-//    const formData = new URLSearchParams(body)
-//
-//    // Perform request.
-//    const result = await fetch(endpoint, 
-//      { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData }
-//    );
-//
-//    const res = await result.json();
-//
-//    //console.log(res)
-//
-//    return res
-//
-//  } catch (err) { return `Operation failed: ${err}` }
-//}
-
-//const ultimo_1 = await testEndpoint(`${BACKEND}ultimo`, {medidor:503});
-//const ultimo_2 = await testEndpoint(`${BACKEND}ultimo`, {medidor:502});
-
-
-
 
